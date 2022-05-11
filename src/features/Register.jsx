@@ -7,8 +7,13 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./register.css";
 
+import axios from "../api/axios";
+
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+
+// endpoint for register
+const REGISTER_URL = "/register";
 
 const Register = () => {
   const userRef = useRef();
@@ -72,6 +77,32 @@ const Register = () => {
 
     console.log("Username", user);
     console.log("Password", pwd);
+
+    // =========== Enable if you have API Service ===========
+    // async post form submit to Backend
+    // try {
+    //   const response = await axios.post(
+    //     REGISTER_URL,
+    //     JSON.stringify({ user, pwd }),
+    //     {
+    //       headers: { "Content-Type": "application/json" },
+    //       withCredential: true,
+    //     }
+    //   );
+    //   console.log(JSON.stringify(response));
+    //   setSuccess(true);
+    //   // Clear input fields if you want
+    // } catch (error) {
+    //   if (!error?.response) {
+    //     setErrMsg("No server response");
+    //   } else if (err.response?.status === 409) {
+    //     setErrMsg("Username Taken");
+    //   } else {
+    //     setErrMsg("Registration Failed");
+    //   }
+    //   errRef.current.focus();
+    // }
+
     setSuccess(true);
   };
 
@@ -86,6 +117,7 @@ const Register = () => {
         </section>
       ) : (
         <section>
+          {/* Error Message */}
           <p
             ref={errRef}
             className={errMsg ? "errmsg" : "offscreen"}
@@ -94,7 +126,9 @@ const Register = () => {
             {errMsg}
           </p>
           <h1>Register</h1>
+
           <form onSubmit={handleSubmit}>
+            {/* Username Field */}
             <label htmlFor="username">
               Username :
               <span className={validName ? "valid" : "hide"}>
@@ -195,6 +229,7 @@ const Register = () => {
               Must match the first password input field
             </p>
 
+            {/* Button Sign Up */}
             <button
               disabled={!validName || !validPwd || !validMatch ? true : false}
             >
